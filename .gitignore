@@ -1,0 +1,5 @@
+.gitgnore
+rsc
+example.ipynb
+root_of_the_project
+__pycache__
