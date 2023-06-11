@@ -78,7 +78,7 @@ class BQ:
 
         # Create schema if not specified
         if schema is None:
-            replacing = {'O': 'STRING', 'float64': 'FLOAT', '<M8[ns]': 'TIMESTAMP', 'int64': 'INT64', 'bool': 'BOOL'}
+            replacing = {'O': 'STRING', 'float64': 'FLOAT', 'float32': 'FLOAT', '<M8[ns]': 'TIMESTAMP', 'int64': 'INT64', 'bool': 'BOOL'}
             schema = obj.dtypes.replace(replacing).reset_index().values.tolist()
 
         job_config.schema = [bigquery.SchemaField(name, type_) for name, type_ in schema]
