@@ -15,12 +15,12 @@ Easy Environment is a Python tool that provides **easy-to-use functionality for 
 
 ## Initialize the Environment
 
-To start using Easy Environment, create an instance of the `Environment` class, providing the necessary parameters:
+To start using Easy Environment, create an instance of the `EasyEnvironment` class, providing the necessary parameters:
 
 ```python
-from environment import Environment
+from easy_env import EasyEnvironment
 
-env = Environment(
+env = EasyEnvironment(
   local_path='path/to/project/root',
   GCP_project_id='your-project-id', # Optional
   GCP_credential_path="path/to/credentials.json", # Optional
@@ -30,7 +30,7 @@ env = Environment(
 
 ## Local File Operations
 
-Easy Environment provides a `Disk` class for local file operations. You can access it through the `local` attribute of the `Environment` instance.
+Easy Environment provides a `Disk` class for local file operations. You can access it through the `local` attribute of the `EasyEnvironment` instance.
 
 ```python
 # Load/Save a pickle object
@@ -48,7 +48,7 @@ env.local.save(dataset, 'outputs/dataset.csv')
 
 ## GCS Operations
 
-To perform file operations on Google Cloud Storage, use the `GCS` class accessible through the `GCP` attribute of the Environment instance.
+To perform file operations on Google Cloud Storage, use the `GCS` class accessible through the `GCP` attribute of the `EasyEnvironment` instance.
 
 ```python
 # Load a pickle object
@@ -60,7 +60,7 @@ env.GCP.GCS.save(dataset, 'dataset.parquet')
 
 ## Big Query Operations
 
-For working with BigQuery, use the `BQ` class accessible through the `GCP` attribute of the `Environment` instance.
+For working with BigQuery, use the `BQ` class accessible through the `GCP` attribute of the `EasyEnvironment` instance.
 
 ```python
 # Create a table
@@ -99,7 +99,7 @@ saver_config = {
     # Add more file extensions and corresponding saver functions and arguments
 }
 
-env = Environment(
+env = EasyEnvironment(
     local_path='path/to/project/root',
     GCP_project_id='your-project-id',
     GCP_credential_path="path/to/credentials.json",

@@ -1,5 +1,6 @@
 .gitgnore
 rsc
+environment.py
 example.ipynb
 root_of_the_project
 __pycache__
