@@ -1,8 +1,7 @@
 import pickle
 import os
-import pandas as pd
-from PIL import Image
-from google.cloud import bigquery, storage
+
+from google.cloud import storage, bigquery
 
 class Environment:
     """
@@ -20,10 +19,14 @@ class Environment:
     def __init__(self, local_path=None, GCP_project_id=None, GCP_credential_path=None,
                   GCS_path=None, loader_config=None, saver_config=None):
 
-        self.GCP = GCP(project_id=GCP_project_id, GCS_path=GCS_path, credential_path=GCP_credential_path,
-                        loader_config=loader_config, saver_config=saver_config)
+        if local_path is not None:
         
-        self.local = Disk(root_path=local_path, loader_config=loader_config, saver_config=saver_config)
+            self.local = Disk(root_path=local_path, loader_config=loader_config, saver_config=saver_config)
+
+        if GCP_project_id is not None:
+            self.GCP = GCP(project_id=GCP_project_id, GCS_path=GCS_path, credential_path=GCP_credential_path,
+                           loader_config=loader_config, saver_config=saver_config)
+        
 
 class GCP:
     """
@@ -52,6 +55,8 @@ class BQ:
         project_id (str): The ID of the Google Cloud project.
         credential_path (str): The path to the Google Cloud credentials file. Default is None.
     """
+
+    # bigquery = __import__('os')
 
     def __init__(self, project_id, credential_path=None):
 
@@ -119,7 +124,7 @@ class GCS:
     """
 
     def __init__(self, project_id, credential_path=None, GCS_path=None, loader_config=None, saver_config=None):
-
+    
         self.project_id = project_id
         self.GCS_path = GCS_path
         self.file_manage = FileManager(loader_config, saver_config)
@@ -202,6 +207,11 @@ class FileManager:
     def __init__(self, loader_config=None, saver_config=None):
         
         if loader_config is None:
+
+            from PIL import Image
+
+            import pandas as pd
+
             self.loader_config = {
                 'png':      Image.open,
                 'jpg':      Image.open,
