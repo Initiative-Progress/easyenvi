@@ -1,12 +1,14 @@
 # Easy environment
 
-Easy Environment is a Python tool that provides **easy-to-use functionality for managing files and data in different environments**. It offers a class called Environment that simplifies file operations on local disk and Google Cloud Platform (GCP) services such as Google Cloud Storage (GCS) and BigQuery (BQ).
+Easy Environment is a Python tool that provides **easy-to-use functionality for managing files and data in different environments**. It offers a class called Environment that simplifies file operations on the local disk and cloud services such as Google Cloud (Google Cloud Storage and Big Query) or SharePoint.
 
 ## Features
 
 * Load and save files in various formats such as PNG, JPG, XLSX, Parquet, CSV, and Pickle.
-* Support for loading and saving files from local disk and GCS.
-* Seamlessly interact with GCP services including GCS and BQ.
+* Support for loading, saving and management file from local disk.
+* Support for loading and saving files from Google Cloud Storage.
+* Support append and write Big Query tables, as well as the ability to run queries.
+* Supports the downloading, uploading and management of files on a SharePoint site.
 * Flexible configuration for file loaders and savers.
 
 <p align="center">
@@ -21,10 +23,15 @@ To start using Easy Environment, create an instance of the `EasyEnvironment` cla
 from easy_env import EasyEnvironment
 
 env = EasyEnvironment(
-  local_path='path/to/project/root',
+  local_path='path/to/project/root', # Optional
+
   GCP_project_id='your-project-id', # Optional
   GCP_credential_path="path/to/credentials.json", # Optional
   GCS_path='gs://your-bucket-name/' # Optional
+
+  sharepoint_client_id="your-client-id", # Optional
+  sharepoint_client_secret="your-client-secret", # Optional
+  sharepoint_site_url="https://{tenant}.sharepoint.com/sites/{site}" # Optional
                   )
 ```
 
@@ -46,7 +53,7 @@ dataset = env.local.load('inputs/dataset.csv')
 env.local.save(dataset, 'outputs/dataset.csv')
 ```
 
-## GCS Operations
+## Google Cloud Storage Operations
 
 To perform file operations on Google Cloud Storage, use the `GCS` class accessible through the `GCP` attribute of the `EasyEnvironment` instance.
 
@@ -82,6 +89,26 @@ WHERE
 new_dataset = env.GCP.BQ.query(query).to_dataframe()
 ```
 
+## Sharepoint
+
+SharePoint operations are accessible via the `sharepoint` attribute of the `EasyEnvironment` instance.
+
+```python
+# Download a file
+env.sharepoint.download(input_path="/folder/subfolder/my_file.csv",
+                        output_path="my_file.csv")
+
+# Upload a file
+env.sharepoint.upload(input_path='my_file.csv',
+                      output_path="/folder/subfolder/my_file.csv")
+
+# List files in a folder
+env.sharepoint.list_files(folder="folder/subfolder")
+
+# Delete a file
+env.sharepoint.delete_file(file_path="/folder/subfolder/my_file.csv")
+```
+
 ## Customizing File Loaders and Savers
 
 Easy Environment allows you to customize the file loaders and savers by providing configuration dictionaries during initialization. Here's an example:
@@ -115,4 +142,4 @@ Make sure to import the necessary functions and libraries for your custom loader
 
 ## Future Improvements
 
-Future releases of Easy Environment will include support for additional cloud storage providers, including Amazon Web Services (AWS) and Microsoft Azure, in addition to the existing Google Cloud Storage (GCS) functionality. This expansion aims to provide users with increased flexibility when working with cloud-based environments.
+Future releases of Easy Environment will include support for additional cloud storage providers, including Amazon Web Services (AWS) and Microsoft Azure. This expansion aims to provide users with increased flexibility when working with cloud-based environments.
