@@ -1,7 +1,7 @@
-db-dtypes==1.1.1 # Optional / Depends on use
-google-cloud-bigquery==3.9.0 # Optional / Depends on use
-google-cloud-storage==2.8.0 # Optional / Depends on use
-pandas==1.5.3 # Optional / Depends on use
-Pillow==8.4.0 # Optional / Depends on use
-pyarrow==12.0.0 # Optional / Depends on use
-Office365-REST-Python-Client # Optional / Depends on use
+db-dtypes==1.1.1
+google-cloud-bigquery==3.9.0
+google-cloud-storage==2.8.0
+pandas==1.5.3
+Pillow==8.4.0
+pyarrow==12.0.0
+Office365-REST-Python-Client

@@ -1,6 +1,9 @@
-.gitgnore
 rsc
-environment.py
 example.ipynb
 root_of_the_project
 __pycache__
+.ipynb_checkpoints
+
+# package
+dist
+enveasy.egg-info

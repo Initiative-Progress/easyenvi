@@ -2,9 +2,9 @@ import pickle
 
 class FileManager:
     """
-    A class that manages loading and saving files using various formats.
+    Manages loading and saving files using various formats.
     
-    Args:
+    Arguments:
         loader_config (dict): Configuration for file loaders.
         saver_config (dict): Configuration for file savers.
     """
@@ -70,3 +70,8 @@ class FileManager:
             
             saver = getattr(obj, func)
             saver(path, **args)
+
+
+def pickle_loader(path):
+    with open(path, 'rb') as file:
+        return pickle.load(file)
