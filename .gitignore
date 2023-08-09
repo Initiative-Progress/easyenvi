@@ -3,6 +3,7 @@ example.ipynb
 root_of_the_project
 __pycache__
 .ipynb_checkpoints
+trash
 
 # package
 dist
