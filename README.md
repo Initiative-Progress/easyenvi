@@ -1,145 +1,123 @@
 # Easy environment : easy-to-use Python environment management toolkit
 
-**Easy Environment** is a Python package that provides easy-to-use functionality for managing files and data in different environments. It offers a class called Environment that simplifies file operations on the local disk and cloud services such as Google Cloud (Google Cloud Storage and Big Query) or SharePoint.
+**Easy Environment** is a Python tool that provides **easy-to-use functionality for managing files and data in different environments.** It offers a class that simplifies file operations on the local disk and cloud services such as Google Cloud (Google Cloud Storage and Big Query) or SharePoint.
 
 ## Features
 
-* Load and save files in various formats such as PNG, JPG, XLSX, Parquet, CSV, and Pickle.
-* Support for loading, saving and management file from local disk.
-* Support for loading and saving files from Google Cloud Storage.
-* Support append and write Big Query tables, as well as the ability to run queries.
-* Supports the downloading, uploading and management of files on a SharePoint site.
-* Flexible configuration for file loaders and savers.
+* **File Formats**: Load and save files in various formats (PNG, JPG, XLSX, Parquet, CSV, Pickle) or [any other format](https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats).
+* **Local Disk**: Support for local disk file handling (loading, saving, and management).
+* **Google Cloud Storage**: Integration for loading and saving files.
+* **Big Query Integration**: Append, write, and run queries on Big Query tables.
+* **SharePoint Integration**: Download, upload, and manage files on SharePoint.
 
 <p align="center">
   <img src="img/table_support.png" alt="drawing" width="500"/>
 </p>
 
-## Initialize the Environment
+## Initialisation
 
-To start using Easy Environment, create an instance of the `EasyEnvironment` class, providing the necessary parameters:
+To use Easy Environment, follow these instructions:
+
+1. Install `easyenvi`
 
 ```python
-from easy_env import EasyEnvironment
+pip install easyenvi
+```
+
+2. Create an instance of the `EasyEnvironment` class
+
+All the parameters in the `EasyEnvironment` class are optional: it depends on how you use the tool. 
+
+```python
+from easyenvi import EasyEnvironment
 
 env = EasyEnvironment(
   local_path='path/to/project/root', # Optional
 
   GCP_project_id='your-project-id', # Optional
   GCP_credential_path="path/to/credentials.json", # Optional
-  GCS_path='gs://your-bucket-name/' # Optional
+  GCS_path='gs://your-bucket-name/', # Optional
 
+  sharepoint_site_url="https://{tenant}.sharepoint.com/sites/{site}", # Optional
   sharepoint_client_id="your-client-id", # Optional
   sharepoint_client_secret="your-client-secret", # Optional
-  sharepoint_site_url="https://{tenant}.sharepoint.com/sites/{site}" # Optional
                   )
 ```
 
-## Local File Operations
+Specifying certain parameters means certain dependencies: 
+* For using Google Cloud, it is necessary to specify the project ID, the path to a credential .json file, and, in case of interaction with Google Cloud Storage, the path to the GCS folder (see [Google Cloud Initialisation](https://antoinepinto.gitbook.io/easy-environment/google-cloud-environment/google-cloud-initialisation)). Additionnaly, the installation of the libraries `google-cloud-storage` and `google-cloud-bigquery` is required. 
+* For using SharePoint, it is necessary to specify the SharePoint site to interact with, as well as authentication credentials: either the client_id/client_secret pair or the username/user_password pair (see [SharePoint Initialisation](https://antoinepinto.gitbook.io/easy-environment/sharepoint-environment/sharepoint-initialisation)). Furthermore, the installation of the `Office365-REST-Python-Client` library is required.
 
-Easy Environment provides a `Disk` class for local file operations. You can access it through the `local` attribute of the `EasyEnvironment` instance.
+## Examples of use
+
+### Local features
 
 ```python
-# Load/Save a pickle object
-my_dictionnary = env.local.load('inputs/my_dictionnary.pickle')
-env.local.save(my_dictionnary, 'outputs/my_dictionnary.pickle')
+# Load any file format
+my_dict = env.local.load(path='inputs/my_dictionnary.pickle')
+my_logo = env.local.load(path='inputs/my_logo.png')
+dataset = env.local.load(path='inputs/dataset.csv')
 
-# Load/Save an image (png / jpg)
-my_logo = env.local.load('inputs/my_logo.png')
-env.local.save(my_logo, 'outputs/my_logo.png')
-
-# Load/Save a dataset (csv / excel / jpg)
-dataset = env.local.load('inputs/dataset.csv')
-env.local.save(dataset, 'outputs/dataset.csv')
+# Save any file format
+env.local.save(obj=my_dict, path='outputs/my_dictionnary.pickle')
+env.local.save(obj=my_logo, path='outputs/my_logo.png')
+env.local.save(obj=dataset, path='outputs/dataset.csv')
 ```
 
-## Google Cloud Storage Operations
-
-To perform file operations on Google Cloud Storage, use the `GCS` class accessible through the `GCP` attribute of the `EasyEnvironment` instance.
+### Google Cloud Storage features
 
 ```python
-# Load a pickle object
-env.GCP.GCS.load(my_dictionnary, 'my_dictionnary.pickle')
+# Load any file format
+my_dict = env.gcloud.GCS.load(path='inputs/my_dictionnary.pickle')
+my_logo = env.gcloud.GCS.load(path='inputs/my_logo.png')
+dataset = env.gcloud.GCS.load(path='inputs/dataset.csv')
 
-# Save a parquet dataset
-env.GCP.GCS.save(dataset, 'dataset.parquet')
+# Save any file format
+env.gcloud.GCS.save(obj=my_dict, path='outputs/my_dictionnary.pickle')
+env.gcloud.GCS.save(obj=my_logo, path='outputs/my_logo.png')
+env.gcloud.GCS.save(obj=dataset, path='outputs/dataset.csv')
 ```
 
-## Big Query Operations
-
-For working with BigQuery, use the `BQ` class accessible through the `GCP` attribute of the `EasyEnvironment` instance.
+### Big Query features
 
 ```python
-# Create a table
-env.GCP.BQ.write(dataset, 'mydata.mytable')
+df = pd.DataFrame(data={'age': [21, 52, 30], 'wage': [12, 17, 11]})
 
-# Append a table
-env.GCP.BQ.append(dataset, 'mydata.mytable')
+# Create a new table
+env.gcloud.BQ.write(dataset, 'mydata.mytable')
 
-# Make a query
+# Append an existing table
+env.gcloud.BQ.append(dataset, 'mydata.mytable')
+
+# Run queries
 query = """
-SELECT 
-  *
-FROM 
-  mydata.mytable
-WHERE 
-  Age > 50
+SELECT *
+FROM mydata.mytable
+WHERE age < 40
 """
 
-new_dataset = env.GCP.BQ.query(query).to_dataframe()
+new_dataset = env.gcloud.BQ.query(query).to_dataframe()
 ```
 
-## Sharepoint
-
-SharePoint operations are accessible via the `sharepoint` attribute of the `EasyEnvironment` instance.
+### SharePoint features
 
 ```python
 # Download a file
-env.sharepoint.download(input_path="/folder/subfolder/my_file.csv",
-                        output_path="my_file.csv")
-
+env.sharepoint.download(input_path="/sharepoint_folder/my_file.txt",
+                        output_path="local_folder/my_file.txt")
+                        
 # Upload a file
-env.sharepoint.upload(input_path='my_file.csv',
-                      output_path="/folder/subfolder/my_file.csv")
-
-# List files in a folder
-env.sharepoint.list_files(folder="folder/subfolder")
-
-# Delete a file
-env.sharepoint.delete_file(file_path="/folder/subfolder/my_file.csv")
+env.sharepoint.upload(input_path="local_folder/my_file.txt",
+                      output_path="sharepoint_folder/my_file.txt")
+                      
+# List files
+env.sharepoint.list_files(folder="local_folder")
 ```
 
-## Customizing File Loaders and Savers
+## Documentation
 
-Easy Environment allows you to customize the file loaders and savers by providing configuration dictionaries during initialization. Here's an example:
-
-```python
-loader_config = {
-    'txt':      txt_loader_function,
-    'json':     json_loader_function,
-    # Add more file extensions and corresponding loader functions
-}
-
-saver_config = {
-    'txt':      {'func': 'txt_saver_function', 'args': {}},
-    'json':     {'func': 'json_saver_function', 'args': {}},
-    # Add more file extensions and corresponding saver functions and arguments
-}
-
-env = EasyEnvironment(
-    local_path='path/to/project/root',
-    GCP_project_id='your-project-id',
-    GCP_credential_path="path/to/credentials.json",
-    GCS_path='gs://your-bucket-name/',
-    loader_config=loader_config,
-    saver_config=saver_config
-)
-```
-
-In the above example, you can specify custom loader and saver functions for file extensions not covered by the default configurations. Just replace 'txt_loader_function' and 'txt_saver_function' with your own loader and saver functions, respectively.
-
-Make sure to import the necessary functions and libraries for your custom loaders and savers.
+The documentation is available here : [Easy Environment - Documentation](https://antoinepinto.gitbook.io/easy-environment/)
 
 ## Future Improvements
 
-Future releases of Easy Environment will include support for additional cloud storage providers, including Amazon Web Services (AWS) and Microsoft Azure. This expansion aims to provide users with increased flexibility when working with cloud-based environments.
+Future releases of Easy Environment will include support for additional cloud storage providers, including Amazon Web Services (AWS) and Microsoft Azure.
