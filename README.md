@@ -24,7 +24,7 @@ To use Easy Environment, follow these instructions:
 1. Install `easyenvi`
 
 ```python
-pip install easyenvi==1.0.1
+pip install easyenvi==1.0.3
 ```
 
 2. Create an instance of the `EasyEnvironment` class

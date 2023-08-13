@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='easyenvi',
-    version='1.0.1',
+    version='1.0.3',
     description='Easy-to-use functionality for managing files and data in different environments',
     author='Antoine PINTO',
     author_email='antoine.pinto1@outlook.fr',
