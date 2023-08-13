@@ -4,14 +4,17 @@
 
 ## Features
 
-* **File Formats**: Load and save files in various formats (PNG, JPG, XLSX, Parquet, CSV, Pickle) or [any other format](https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats).
-* **Local Disk**: Support for local disk file handling (loading, saving, and management).
-* **Google Cloud Storage**: Integration for loading and saving files.
-* **Big Query Integration**: Append, write, and run queries on Big Query tables.
-* **SharePoint Integration**: Download, upload, and manage files on SharePoint.
+* **Multi-format loading and saving**: Load and save files in various formats with one command line
+  * **Default supported formats**: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml
+  * **Unsupported formats**: Customisable. See [Customise supported formats](https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats).
+* **Multi-environment management**:
+  * **Local disk**: Loading/saving and management.
+  * **Google Cloud Storage**: Loading/saving and management.
+  * **Big Query**: Append, write, and run queries on Big Query tables.
+  * **SharePoint**: Download, upload, and manage files on SharePoint.
 
 <p align="center">
-  <img src="img/table_support.png" alt="drawing" width="500"/>
+  <img src="https://github.com/AntoinePinto/easy-environment/blob/master/img/table_support.png?raw=true" alt="drawing" width="700"/>
 </p>
 
 ## Initialisation
@@ -21,7 +24,7 @@ To use Easy Environment, follow these instructions:
 1. Install `easyenvi`
 
 ```python
-pip install easyenvi
+pip install easyenvi==1.0.1
 ```
 
 2. Create an instance of the `EasyEnvironment` class
@@ -34,8 +37,8 @@ from easyenvi import EasyEnvironment
 env = EasyEnvironment(
   local_path='path/to/project/root', # Optional
 
-  GCP_project_id='your-project-id', # Optional
-  GCP_credential_path="path/to/credentials.json", # Optional
+  gcloud_project_id='your-project-id', # Optional
+  gcloud_credential_path="path/to/credentials.json", # Optional
   GCS_path='gs://your-bucket-name/', # Optional
 
   sharepoint_site_url="https://{tenant}.sharepoint.com/sites/{site}", # Optional

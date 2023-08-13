@@ -10,20 +10,20 @@ class Disk:
     ----------
     local_path : str
         The path from which interactions with the local environment will be performed.
-    loader_config : dict
-        Configuration for file loaders. Default is None.
-    saver_config :dict
-        Configuration for file savers. Default is None.
+    extra_loader_config : dict
+        Extra configuration for file loaders. Default is None.
+    extra_saver_config :dict
+        Extra configuration for file savers. Default is None.
     """
 
-    def __init__(self, root_path, loader_config=None, saver_config=None):
+    def __init__(self, root_path, extra_loader_config=None, extra_saver_config=None):
         self.root_path = root_path
-        self.file_manage = FileManager(loader_config, saver_config)
+        self.file_manager = FileManager(extra_loader_config, extra_saver_config)
 
-    def load(self, path):
+    def load(self, path, **kwargs):
         """
         Load a file.
-        By default, the extensions supported are .png, .jpg, .xlsx, .parquet, .csv, .parquet, .pickle. To integrate other extensions into the tool, see documentation "Customizing loader and saver".
+        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
         
         Parameters
         ----------
@@ -33,12 +33,25 @@ class Disk:
 
         load_path = os.path.join(self.root_path, path)
         extension = path.split('.')[-1]
-        return self.file_manage.load(load_path, extension)
 
-    def save(self, obj, path):
+        if extension not in self.file_manager.loader_config:
+            error_message = (
+                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
+                "If you're interested in contributing, feel free to submit a pull request to\n"
+                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+            )
+            raise ValueError(error_message)
+
+        loader, mode = self.file_manager.loader_config[extension]
+
+        with open(load_path, mode) as f:
+            return loader(f, **kwargs)
+
+    def save(self, obj, path, **kwargs):
         """
         Save a file
-        By default, the extensions supported are .png, .jpg, .xlsx, .parquet, .csv, .parquet, .pickle. To integrate other extensions into the tool, see documentation "Customizing loader and saver".
+        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
         
         Parameters
         ----------
@@ -50,7 +63,20 @@ class Disk:
 
         save_path = os.path.join(self.root_path, path)
         extension = path.split('.')[-1]
-        self.file_manage.save(obj, save_path, extension)
+
+        if extension not in self.file_manager.saver_config:
+            error_message = (
+                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
+                "If you're interested in contributing, feel free to submit a pull request to\n"
+                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+            )
+            raise ValueError(error_message)
+
+        saver, mode = self.file_manager.saver_config[extension]
+
+        with open(save_path, mode) as f:
+            saver(obj, f, **kwargs)
 
     def clear_folder(self, path):
         """

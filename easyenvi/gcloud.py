@@ -16,20 +16,18 @@ class gcloud:
         The path to the Google Cloud credentials file. Default is None.
     GCS_path : str
         The base path of the Google Cloud Storage.
-    loader_config : dict
-        Configuration for file loaders.
-    saver_config : dict
-        Configuration for file savers.
+    extra_loader_config : dict
+        Extra configuration for file loaders.
+    extra_saver_config : dict
+        Extra configuration for file savers.
     """
 
     def __init__(self, project_id, credential_path=None, GCS_path=None,
-                 loader_config=None, saver_config=None):
+                 extra_loader_config=None, extra_saver_config=None):
 
         self.GCS = GCS(project_id=project_id, GCS_path=GCS_path, credential_path=credential_path,
-                       loader_config=loader_config, saver_config=saver_config)
+                       extra_loader_config=extra_loader_config, extra_saver_config=extra_saver_config)
         self.BQ = BQ(project_id=project_id, credential_path=credential_path)
-
-
 
 class GCS:
     """
@@ -43,17 +41,17 @@ class GCS:
         The path to the Google Cloud credentials file. Default is None.
     GCS_path : str
         The base path on GCS. Default is None.
-    loader_config : dict
-        Configuration for file loaders.
-    saver_config : dict
-        Configuration for file savers.
+    extra_loader_config : dict
+        Extra configuration for file loaders.
+    extra_saver_config : dict
+        Extra configuration for file savers.
     """
 
-    def __init__(self, project_id, credential_path=None, GCS_path=None, loader_config=None, saver_config=None):
+    def __init__(self, project_id, credential_path=None, GCS_path=None, extra_loader_config=None, extra_saver_config=None):
     
         self.project_id = project_id
         self.GCS_path = GCS_path
-        self.file_manage = FileManager(loader_config, saver_config)
+        self.file_manager = FileManager(extra_loader_config, extra_saver_config)
 
         if credential_path is not None:
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
@@ -73,10 +71,10 @@ class GCS:
         blob = storage.Client(project=self.project_id).bucket(bucket_name).blob(path)
         return blob
 
-    def load(self, path):
+    def load(self, path, **kwargs):
         """
         Load a file from GCS
-        By default, the extensions supported are .png, .jpg, .xlsx, .parquet, .csv, .parquet, .pickle. To integrate other extensions into the tool, see documentation "Customizing loader and saver".
+        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
 
         
         Parameters
@@ -86,14 +84,26 @@ class GCS:
         """
 
         extension = path.split('.')[-1]
-        blob = self.get_blob(path)
-        
-        return self.file_manage.load(blob.open('rb'), extension)
 
-    def save(self, obj, path):
+        if extension not in self.file_manager.loader_config:
+            error_message = (
+                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
+                "If you're interested in contributing, feel free to submit a pull request to\n"
+                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+            )
+            raise ValueError(error_message)
+
+        blob = self.get_blob(path)
+        loader, mode = self.file_manager.loader_config[extension]
+
+        with blob.open(mode) as f:
+            return loader(f, **kwargs)
+
+    def save(self, obj, path, **kwargs):
         """
         Save a file to GCS
-        By default, the extensions supported are .png, .jpg, .xlsx, .parquet, .csv, .parquet, .pickle. To integrate other extensions into the tool, see documentation "Customizing loader and saver".
+        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
 
         
         Parameters
@@ -106,12 +116,29 @@ class GCS:
 
         extension = path.split('.')[-1]
 
-        if extension in ['png', 'jpg']:
-            raise Exception("Saving extension unsupported by the saver")
+        if extension not in self.file_manager.saver_config:
+            error_message = (
+                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
+                "If you're interested in contributing, feel free to submit a pull request to\n"
+                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+            )
+            raise ValueError(error_message)
 
+        if extension in ['png', 'jpg']:
+            error_message = (
+                f"Extension '{extension}' is not currently supported for saving in Google Cloud Storage\n"
+                "through Easy Environment.\n\n"
+                "If you're interested in contributing, feel free to submit a pull request to our GitHub\n"
+                "repository: https://github.com/AntoinePinto/easy-environment"
+            )
+            raise ValueError(error_message)
+            
         blob = self.get_blob(path)
-        with blob.open('wb', ignore_flush=True) as f:
-            self.file_manage.save(obj, f, extension)
+        saver, mode = self.file_manager.saver_config[extension]
+
+        with blob.open(mode, ignore_flush=True) as f:
+            saver(obj, f, **kwargs)
 
     def list_files(self, path):
         """

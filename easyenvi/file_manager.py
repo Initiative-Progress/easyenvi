@@ -1,92 +1,141 @@
-import pickle
-
 class FileManager:
     """
     Manages loading and saving files using various formats.
     
     Arguments:
-        loader_config (dict): Configuration for file loaders.
-        saver_config (dict): Configuration for file savers.
+        extra_loader_config (dict): Extra configuration for file loaders.
+        extra_saver_config (dict): Extra configuration for file savers.
     """
 
-    def __init__(self, loader_config=None, saver_config=None):
+    def __init__(self, extra_loader_config=None, extra_saver_config=None):
+
+        self.loader_config = {
+            'csv':      (csv_loader,        'rb'),
+            'jpg':      (jpg_loader,        'rb'),
+            'json':     (json_loader,       'rt'),
+            'parquet':  (parquet_loader,    'rb'),
+            'pickle':   (pickle_loader,     'rb'),
+            'png':      (png_loader,        'rb'),
+            'toml':     (toml_loader,       'rt'),
+            'txt':      (txt_loader,        'rt'),
+            'xlsx':     (xlsx_loader,       'rb'),
+            'xml':      (xml_loader,        'rb'),
+            'yaml':     (yaml_loader,       'rt'),
+            'yml':      (yaml_loader,       'rt')
+        }
         
-        if loader_config is None:
+        self.saver_config = {
+            'csv':      (csv_saver,         'wb'),
+            'jpg':      (jpg_saver,         'wb'),
+            'json':     (json_saver,        'wt'),
+            'parquet':  (parquet_saver,     'wb'),
+            'pickle':   (pickle_saver,      'wb'),
+            'png':      (png_saver,         'wb'),
+            'toml':     (toml_saver,        'wt'),
+            'txt':      (txt_saver,        'wt'),
+            'xlsx':     (xlsx_saver,        'wb'),
+            'xml':      (xml_saver,         'wb'),
+            'yaml':     (yaml_saver,        'wt'),
+            'yml':      (yaml_saver,        'wt')
+        }
 
-            from PIL import Image
+        if extra_loader_config is not None:
+            self.loader_config.update(extra_loader_config)
 
-            import pandas as pd
+        if extra_saver_config is not None:
+            self.saver_config.update(extra_saver_config)
 
-            self.loader_config = {
-                'png':      Image.open,
-                'jpg':      Image.open,
-                'xlsx':     pd.read_excel,
-                'parquet':  pd.read_parquet,
-                'csv':      pd.read_csv,
-                'pickle':   pickle_loader
-            }
+# CSV
+def csv_loader(path, **kwargs):
+    import pandas as pd
+    return pd.read_csv(path, **kwargs)
 
-        else:
+def csv_saver(obj, path, **kwargs):
+    obj.to_csv(path, **kwargs)
 
-            self.loader_config = loader_config
+# JPG
+def jpg_loader(path, **kwargs):
+    from PIL import Image
+    return Image.open(path, **kwargs).copy()
 
-        if saver_config is None:
-            self.saver_config = {
-                'png':      png_saver,
-                'jpg':      jpg_saver,
-                'xlsx':     xlsx_saver,
-                'parquet':  parquet_saver,
-                'csv':      csv_saver,
-                'pickle':   pickle_saver
-            }
-        
-        else:
-            
-            self.saver_config = saver_config
+def jpg_saver(obj, path, **kwargs):
+    obj.save(path, **kwargs)
 
-    def load(self, path, extension):
-        """Loads a file from the specified path and extension."""
-        
-        if extension not in self.loader_config.keys():
-            raise Exception("Saving extension unsupported by the saver")
+# JSON
+def json_loader(path, **kwargs):
+    import json
+    return json.load(path, **kwargs)
 
-        loader = self.loader_config[extension]
-        return loader(path)
-        
-    def save(self, obj, path, extension):
-        """Saves an object to the specified path with the given extension."""
+def json_saver(obj, path, **kwargs):
+    import json
+    json.dump(obj, path, **kwargs)
 
-        if extension not in self.saver_config.keys():
-            raise Exception("Saving extension unsupported by the saver")
+# PARQUET
+def parquet_loader(path, **kwargs):
+    import pandas as pd
+    return pd.read_parquet(path, **kwargs)
 
-        saver = self.saver_config[extension]
-        saver(obj, path)
+def parquet_saver(obj, path, **kwargs):
+    obj.to_parquet(path, **kwargs)
 
-def pickle_loader(path):
-    if isinstance(path, str):
-        with open(path, 'rb') as file:
-            return pickle.load(file)
-    else:
-        pickle.load(path)
-    
-def pickle_saver(obj, path):
-    if isinstance(path, str):
-        with open(path, 'wb') as file:
-            pickle.dump(obj, file, protocol=pickle.HIGHEST_PROTOCOL)
-    else:
-        pickle.dump(obj, path, protocol=pickle.HIGHEST_PROTOCOL)
+# PICKLE
+def pickle_loader(path, **kwargs):
+    import pickle
+    return pickle.load(path, **kwargs)
 
-def csv_saver(obj, path):
-    obj.to_csv(path)
+def pickle_saver(obj, path, **kwargs):
+    import pickle
+    pickle.dump(obj, path, protocol=pickle.HIGHEST_PROTOCOL, **kwargs)
 
-def parquet_saver(obj, path):
-    obj.to_parquet(path)
+# PNG
+def png_loader(path, **kwargs):
+    from PIL import Image
+    return Image.open(path, **kwargs).copy()
 
-def xlsx_saver(obj, path):
-    obj.to_excel(path)
+def png_saver(obj, path, **kwargs):
+    obj.save(path, **kwargs)
 
-def png_saver(obj, path):
-    obj.save(path)
+# TOML
+def toml_loader(path, **kwargs):
+    import toml
+    return toml.load(path, **kwargs)
 
-def jpg_saver(obj, path):
-    obj.save(path)
+def toml_saver(obj, path, **kwargs):
+    import toml
+    toml.dump(obj, path, **kwargs)
+
+# TXT
+def txt_loader(path, **kwargs):
+    return path.read(**kwargs)
+
+def txt_saver(obj, path, **kwargs):
+    path.write(obj, **kwargs)
+
+# XML
+def xml_loader(path, **kwargs):
+    import xml.etree.ElementTree as ET
+    tree = ET.parse(path, **kwargs)
+    root = tree.getroot()
+    return root
+
+def xml_saver(obj, path, **kwargs):
+    import xml.etree.ElementTree as ET
+    tree = ET.ElementTree(obj)
+    tree.write(path, **kwargs)
+
+# XLSX
+def xlsx_loader(path, **kwargs):
+    import pandas as pd
+    return pd.read_excel(path, **kwargs)
+
+def xlsx_saver(obj, path, **kwargs):
+    obj.to_excel(path, **kwargs)
+
+# YAML
+def yaml_loader(path, **kwargs):
+    import yaml
+    return yaml.safe_load(path, **kwargs)
+
+def yaml_saver(obj, path, **kwargs):
+    import yaml
+    yaml.dump(obj, path, **kwargs)
