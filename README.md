@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="https://github.com/AntoinePinto/easy-environment/blob/master/img/logo.png?raw=true"
+  raw=true" alt="drawing" width="400"/>><br>
+</div>
+
 # Easy environment : easy-to-use Python environment management toolkit
 
 **Easy Environment** is a Python tool that provides **easy-to-use functionality for managing files and data in different environments.** It offers a class that simplifies file operations on the local disk and cloud services such as Google Cloud (Google Cloud Storage and Big Query) or SharePoint.
