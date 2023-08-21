@@ -10,7 +10,7 @@
 ## Features
 
 * **Multi-format loading and saving**: Load and save files in various formats with one command line
-  * **Default supported formats**: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml
+  * **Default supported formats**: .csv, .xlsx, .parquet, .json, .toml, .md, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml
   * **Unsupported formats**: Customisable. See [Customise supported formats](https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats).
 * **Multi-environment management**:
   * **Local disk**: Loading/saving and management.
@@ -39,7 +39,7 @@ All the parameters in the `EasyEnvironment` class are optional: it depends on ho
 ```python
 from easyenvi import EasyEnvironment
 
-env = EasyEnvironment(
+envi = EasyEnvironment(
   local_path='path/to/project/root', # Optional
 
   gcloud_project_id='your-project-id', # Optional
@@ -62,28 +62,28 @@ Specifying certain parameters means certain dependencies:
 
 ```python
 # Load any file format
-my_dict = env.local.load(path='inputs/my_dictionnary.pickle')
-my_logo = env.local.load(path='inputs/my_logo.png')
-dataset = env.local.load(path='inputs/dataset.csv')
+my_dict = envi.local.load(path='inputs/my_dictionnary.pickle')
+my_logo = envi.local.load(path='inputs/my_logo.png')
+dataset = envi.local.load(path='inputs/dataset.csv')
 
 # Save any file format
-env.local.save(obj=my_dict, path='outputs/my_dictionnary.pickle')
-env.local.save(obj=my_logo, path='outputs/my_logo.png')
-env.local.save(obj=dataset, path='outputs/dataset.csv')
+envi.local.save(obj=my_dict, path='outputs/my_dictionnary.pickle')
+envi.local.save(obj=my_logo, path='outputs/my_logo.png')
+envi.local.save(obj=dataset, path='outputs/dataset.csv')
 ```
 
 ### Google Cloud Storage features
 
 ```python
 # Load any file format
-my_dict = env.gcloud.GCS.load(path='inputs/my_dictionnary.pickle')
-my_logo = env.gcloud.GCS.load(path='inputs/my_logo.png')
-dataset = env.gcloud.GCS.load(path='inputs/dataset.csv')
+my_dict = envi.gcloud.GCS.load(path='inputs/my_dictionnary.pickle')
+my_logo = envi.gcloud.GCS.load(path='inputs/my_logo.png')
+dataset = envi.gcloud.GCS.load(path='inputs/dataset.csv')
 
 # Save any file format
-env.gcloud.GCS.save(obj=my_dict, path='outputs/my_dictionnary.pickle')
-env.gcloud.GCS.save(obj=my_logo, path='outputs/my_logo.png')
-env.gcloud.GCS.save(obj=dataset, path='outputs/dataset.csv')
+envi.gcloud.GCS.save(obj=my_dict, path='outputs/my_dictionnary.pickle')
+envi.gcloud.GCS.save(obj=my_logo, path='outputs/my_logo.png')
+envi.gcloud.GCS.save(obj=dataset, path='outputs/dataset.csv')
 ```
 
 ### Big Query features
@@ -92,10 +92,10 @@ env.gcloud.GCS.save(obj=dataset, path='outputs/dataset.csv')
 df = pd.DataFrame(data={'age': [21, 52, 30], 'wage': [12, 17, 11]})
 
 # Create a new table
-env.gcloud.BQ.write(dataset, 'mydata.mytable')
+envi.gcloud.BQ.write(dataset, 'mydata.mytable')
 
 # Append an existing table
-env.gcloud.BQ.append(dataset, 'mydata.mytable')
+envi.gcloud.BQ.append(dataset, 'mydata.mytable')
 
 # Run queries
 query = """
@@ -104,22 +104,22 @@ FROM mydata.mytable
 WHERE age < 40
 """
 
-new_dataset = env.gcloud.BQ.query(query).to_dataframe()
+new_dataset = envi.gcloud.BQ.query(query).to_dataframe()
 ```
 
 ### SharePoint features
 
 ```python
 # Download a file
-env.sharepoint.download(input_path="/sharepoint_folder/my_file.txt",
-                        output_path="local_folder/my_file.txt")
+envi.sharepoint.download(input_path="/sharepoint_folder/my_file.txt",
+                         output_path="local_folder/my_file.txt")
                         
 # Upload a file
-env.sharepoint.upload(input_path="local_folder/my_file.txt",
-                      output_path="sharepoint_folder/my_file.txt")
+envi.sharepoint.upload(input_path="local_folder/my_file.txt",
+                       output_path="sharepoint_folder/my_file.txt")
                       
 # List files
-env.sharepoint.list_files(folder="local_folder")
+envi.sharepoint.list_files(folder="local_folder")
 ```
 
 ## Documentation

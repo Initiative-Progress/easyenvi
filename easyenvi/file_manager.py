@@ -13,6 +13,7 @@ class FileManager:
             'csv':      (csv_loader,        'rb'),
             'jpg':      (jpg_loader,        'rb'),
             'json':     (json_loader,       'rt'),
+            'md':       (md_loader,         'rt'),
             'parquet':  (parquet_loader,    'rb'),
             'pickle':   (pickle_loader,     'rb'),
             'png':      (png_loader,        'rb'),
@@ -28,6 +29,7 @@ class FileManager:
             'csv':      (csv_saver,         'wb'),
             'jpg':      (jpg_saver,         'wb'),
             'json':     (json_saver,        'wt'),
+            'md':       (md_saver,          'wt'),
             'parquet':  (parquet_saver,     'wb'),
             'pickle':   (pickle_saver,      'wb'),
             'png':      (png_saver,         'wb'),
@@ -69,6 +71,13 @@ def json_loader(path, **kwargs):
 def json_saver(obj, path, **kwargs):
     import json
     json.dump(obj, path, **kwargs)
+
+# MD
+def md_loader(path, **kwargs):
+    return path.read(**kwargs)
+
+def md_saver(obj, path, **kwargs):
+    path.write(obj, **kwargs)
 
 # PARQUET
 def parquet_loader(path, **kwargs):
