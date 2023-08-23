@@ -1,5 +1,7 @@
 import os
 
+import fsspec
+
 from google.cloud import storage, bigquery
 
 from .file_manager import FileManager
@@ -52,6 +54,7 @@ class GCS:
         self.project_id = project_id
         self.GCS_path = GCS_path
         self.file_manager = FileManager(extra_loader_config, extra_saver_config)
+        self.credential_path = credential_path
 
         if credential_path is not None:
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
@@ -94,10 +97,9 @@ class GCS:
             )
             raise ValueError(error_message)
 
-        blob = self.get_blob(path)
+        full_path = self.GCS_path + path
         loader, mode = self.file_manager.loader_config[extension]
-
-        with blob.open(mode) as f:
+        with fsspec.open(full_path, mode, token=self.credential_path) as f:
             return loader(f, **kwargs)
 
     def save(self, obj, path, **kwargs):
@@ -133,12 +135,11 @@ class GCS:
                 "repository: https://github.com/AntoinePinto/easy-environment"
             )
             raise ValueError(error_message)
-            
-        blob = self.get_blob(path)
-        saver, mode = self.file_manager.saver_config[extension]
 
-        with blob.open(mode, ignore_flush=True) as f:
-            saver(obj, f, **kwargs)
+        full_path = self.GCS_path + path
+        saver, mode = self.file_manager.saver_config[extension]
+        with fsspec.open(full_path, mode, token=self.credential_path) as f:
+            return saver(obj, f, **kwargs)
 
     def list_files(self, path):
         """
