@@ -2,7 +2,7 @@ class EasyEnvironment:
     """
     Easy-to-use functionality for managing files and data in different environments (local, google cloud, sharepoint).
     
-    Parameters:
+    Parameters
     ----------
     local_path : str (optional)
         The path from which interactions with the local environment will be performed.
@@ -30,7 +30,8 @@ class EasyEnvironment:
     Notes
     -----
     Multi-extension management: 
-        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
+        To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
+        To integrate other extensions into the tool, see documentation "Customise supported formats": https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats
     SharePoint environment:
         Need to obtain credentials: https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azureacs
         Either the pair client_id - client_secret is required, either the pair username - user_password

@@ -1,5 +1,7 @@
 import os
 
+import fsspec
+
 from .file_manager import FileManager
 
 class Disk:
@@ -23,8 +25,9 @@ class Disk:
     def load(self, path, **kwargs):
         """
         Load a file.
-        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
-        
+        To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
+        To integrate other extensions into the tool, see documentation "Customise supported formats": https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats
+
         Parameters
         ----------
         path : str
@@ -37,22 +40,21 @@ class Disk:
         if extension not in self.file_manager.loader_config:
             error_message = (
                 f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
-                "If you're interested in contributing, feel free to submit a pull request to\n"
-                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
             )
             raise ValueError(error_message)
 
         loader, mode = self.file_manager.loader_config[extension]
 
-        with open(load_path, mode) as f:
+        with fsspec.open(load_path, mode) as f:
             return loader(f, **kwargs)
 
     def save(self, obj, path, **kwargs):
         """
         Save a file
-        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
-        
+        To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
+        To integrate other extensions into the tool, see documentation "Customise supported formats": https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats
+
         Parameters
         ----------
         obj
@@ -67,15 +69,13 @@ class Disk:
         if extension not in self.file_manager.saver_config:
             error_message = (
                 f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
-                "If you're interested in contributing, feel free to submit a pull request to\n"
-                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
             )
             raise ValueError(error_message)
 
         saver, mode = self.file_manager.saver_config[extension]
 
-        with open(save_path, mode) as f:
+        with fsspec.open(save_path, mode) as f:
             saver(obj, f, **kwargs)
 
     def clear_folder(self, path):

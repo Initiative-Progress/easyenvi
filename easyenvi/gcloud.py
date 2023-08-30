@@ -77,8 +77,8 @@ class GCS:
     def load(self, path, **kwargs):
         """
         Load a file from GCS
-        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
-
+        To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
+        To integrate other extensions into the tool, see documentation "Customise supported formats": https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats
         
         Parameters
         ----------
@@ -91,9 +91,7 @@ class GCS:
         if extension not in self.file_manager.loader_config:
             error_message = (
                 f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
-                "If you're interested in contributing, feel free to submit a pull request to\n"
-                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
             )
             raise ValueError(error_message)
 
@@ -105,9 +103,9 @@ class GCS:
     def save(self, obj, path, **kwargs):
         """
         Save a file to GCS
-        By default, the extensions supported by the loader/saver the following: .csv, .xlsx, .parquet, .json, .toml, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml. To integrate other extensions into the tool, see documentation "Customise supported formats".
+        To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
+        To integrate other extensions into the tool, see documentation "Customise supported formats": https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats
 
-        
         Parameters
         ----------
         obj
@@ -121,18 +119,14 @@ class GCS:
         if extension not in self.file_manager.saver_config:
             error_message = (
                 f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)\n\n"
-                "If you're interested in contributing, feel free to submit a pull request to\n"
-                "our GitHub repository: https://github.com/AntoinePinto/easy-environment"
+                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
             )
             raise ValueError(error_message)
 
         if extension in ['png', 'jpg']:
             error_message = (
                 f"Extension '{extension}' is not currently supported for saving in Google Cloud Storage\n"
-                "through Easy Environment.\n\n"
-                "If you're interested in contributing, feel free to submit a pull request to our GitHub\n"
-                "repository: https://github.com/AntoinePinto/easy-environment"
+                "through Easy Environment."
             )
             raise ValueError(error_message)
 
@@ -177,7 +171,8 @@ class BQ:
     """
     Allows interaction with Google Cloud Big Query environment.
 
-    Parameters:
+    Parameters
+    ----------
     project_id : str
         The ID of the Google Cloud project.
     credential_path : str
@@ -195,7 +190,8 @@ class BQ:
         """
         Load an entire Big Query table into Python.
         
-        Parameters:
+        Parameters
+        ----------
         path : str
             path representing the data set and the name of the table (ex : "mydata.mytable")
         """
