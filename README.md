@@ -10,7 +10,7 @@
 ## Features
 
 * **Multi-format loading and saving**: Load and save files in various formats with one command line
-  * **Default supported formats**: .csv, .xlsx, .parquet, .json, .toml, .md, .pickle, .png, .jpg, .txt, .xml, .yaml, .yml
+  * **Default supported formats**: csv, docx, jpg, json, md, parquet, pdf, pickle, png, pptx, sql, toml, txt, xlsx, xml, yaml, yml
   * **Unsupported formats**: Customisable. See [Customise supported formats](https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats).
 * **Multi-environment management**:
   * **Local disk**: Loading/saving and management.
@@ -19,7 +19,7 @@
   * **SharePoint**: Download, upload, and manage files on SharePoint.
 
 <p align="center">
-  <img src="https://github.com/AntoinePinto/easy-environment/blob/master/img/table_support.png?raw=true" alt="drawing" width="700"/>
+  <img src="https://github.com/AntoinePinto/easy-environment/blob/master/img/table_support.png?raw=true" alt="drawing" width="800"/>
 </p>
 
 ## Initialisation
@@ -29,7 +29,7 @@ To use Easy Environment, follow these instructions:
 1. Install `easyenvi`
 
 ```python
-pip install easyenvi==1.0.3
+pip install easyenvi==1.0.4
 ```
 
 2. Create an instance of the `EasyEnvironment` class
@@ -40,11 +40,11 @@ All the parameters in the `EasyEnvironment` class are optional: it depends on ho
 from easyenvi import EasyEnvironment
 
 envi = EasyEnvironment(
-  local_path='path/to/project/root', # Optional
+  local_path="", # Optional
 
-  gcloud_project_id='your-project-id', # Optional
+  gcloud_project_id="your-project-id", # Optional
   gcloud_credential_path="path/to/credentials.json", # Optional
-  GCS_path='gs://your-bucket-name/', # Optional
+  GCS_path="gs://your-bucket-name/", # Optional
 
   sharepoint_site_url="https://{tenant}.sharepoint.com/sites/{site}", # Optional
   sharepoint_client_id="your-client-id", # Optional
@@ -53,8 +53,9 @@ envi = EasyEnvironment(
 ```
 
 Specifying certain parameters means certain dependencies: 
-* For using Google Cloud, it is necessary to specify the project ID, the path to a credential .json file, and, in case of interaction with Google Cloud Storage, the path to the GCS folder (see [Google Cloud Initialisation](https://antoinepinto.gitbook.io/easy-environment/google-cloud-environment/google-cloud-initialisation)). Additionnaly, the installation of the libraries `google-cloud-storage` and `google-cloud-bigquery` is required. 
-* For using SharePoint, it is necessary to specify the SharePoint site to interact with, as well as authentication credentials: either the client_id/client_secret pair or the username/user_password pair (see [SharePoint Initialisation](https://antoinepinto.gitbook.io/easy-environment/sharepoint-environment/sharepoint-initialisation)). Furthermore, the installation of the `Office365-REST-Python-Client` library is required.
+* For using **local operation**, it is necessary to specify `local_path`, the path from which local operations should be executed - specify an empty string if you want to use the current directory. Additionnaly, the installation of the `fsspec` library is required.
+* For using **Google Cloud**, it is necessary to specify the project ID, the path to a credential .json file, and, in case of interaction with Google Cloud Storage, the path to the GCS folder (see [Google Cloud Initialisation](https://antoinepinto.gitbook.io/easy-environment/google-cloud-environment/google-cloud-initialisation)). Additionnaly, the installation of the libraries `google-cloud-storage`, `google-cloud-bigquery` and `fsspec` is required. 
+* For using **SharePoint**, it is necessary to specify the SharePoint site to interact with, as well as authentication credentials: either the client_id/client_secret pair or the username/user_password pair (see [SharePoint Initialisation](https://antoinepinto.gitbook.io/easy-environment/sharepoint-environment/sharepoint-initialisation)). Furthermore, the installation of the `Office365-REST-Python-Client` library is required.
 
 ## Examples of use
 
@@ -111,12 +112,12 @@ new_dataset = envi.gcloud.BQ.query(query).to_dataframe()
 
 ```python
 # Download a file
-envi.sharepoint.download(input_path="/sharepoint_folder/my_file.txt",
+envi.sharepoint.download(input_path="/Document partages/sharepoint_folder/my_file.txt",
                          output_path="local_folder/my_file.txt")
                         
 # Upload a file
 envi.sharepoint.upload(input_path="local_folder/my_file.txt",
-                       output_path="sharepoint_folder/my_file.txt")
+                       output_path="Document partages/folder/my_file.txt")
                       
 # List files
 envi.sharepoint.list_files(folder="local_folder")
@@ -125,6 +126,10 @@ envi.sharepoint.list_files(folder="local_folder")
 ## Documentation
 
 The documentation is available here : [Easy Environment - Documentation](https://antoinepinto.gitbook.io/easy-environment/)
+
+## Credits
+
+Thanks to [Hervé Mignot](https://github.com/HerveMignot) for his advice on using `fsspec`.
 
 ## Future Improvements
 
