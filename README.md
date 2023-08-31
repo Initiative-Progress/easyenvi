@@ -29,7 +29,7 @@ To use Easy Environment, follow these instructions:
 1. Install `easyenvi`
 
 ```python
-pip install easyenvi==1.0.4
+pip install easyenvi==1.0.5
 ```
 
 2. Create an instance of the `EasyEnvironment` class
@@ -129,7 +129,7 @@ The documentation is available here : [Easy Environment - Documentation](https:/
 
 ## Credits
 
-Thanks to [Hervé Mignot](https://github.com/HerveMignot) for his advice on using `fsspec`.
+Thanks to [Herve Mignot](https://github.com/HerveMignot) for his advice on using `fsspec`.
 
 ## Future Improvements
 
