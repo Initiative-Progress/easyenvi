@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/AntoinePinto/easy-environment/blob/master/img/logo.png?raw=true"
+  <img src="https://github.com/AntoinePinto/easyenvi/blob/master/img/logo.png?raw=true"
   raw=true" alt="drawing" width="400"/>><br>
 </div>
 
@@ -11,7 +11,7 @@
 
 * **Multi-format loading and saving**: Load and save files in various formats with one command line
   * **Default supported formats**: csv, docx, jpg, json, md, parquet, pdf, pickle, png, pptx, sql, toml, txt, xlsx, xml, yaml, yml
-  * **Unsupported formats**: Customisable. See [Customise supported formats](https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats).
+  * **Unsupported formats**: Customisable. See [Customise supported formats](https://antoinepinto.gitbook.io/easyenvi/extra/customise-supported-formats).
 * **Multi-environment management**:
   * **Local disk**: Loading/saving and management.
   * **Google Cloud Storage**: Loading/saving and management.
@@ -19,7 +19,7 @@
   * **SharePoint**: Download, upload, and manage files on SharePoint.
 
 <p align="center">
-  <img src="https://github.com/AntoinePinto/easy-environment/blob/master/img/table_support.png?raw=true" alt="drawing" width="800"/>
+  <img src="https://github.com/AntoinePinto/easyenvi/blob/master/img/table_support.png?raw=true" alt="drawing" width="800"/>
 </p>
 
 ## Initialisation
@@ -54,8 +54,8 @@ envi = EasyEnvironment(
 
 Specifying certain parameters means certain dependencies: 
 * For using **local operation**, it is necessary to specify `local_path`, the path from which local operations should be executed - specify an empty string if you want to use the current directory. Additionnaly, the installation of the `fsspec` library is required.
-* For using **Google Cloud**, it is necessary to specify the project ID, the path to a credential .json file, and, in case of interaction with Google Cloud Storage, the path to the GCS folder (see [Google Cloud Initialisation](https://antoinepinto.gitbook.io/easy-environment/google-cloud-environment/google-cloud-initialisation)). Additionnaly, the installation of the libraries `google-cloud-storage`, `google-cloud-bigquery` and `fsspec` is required. 
-* For using **SharePoint**, it is necessary to specify the SharePoint site to interact with, as well as authentication credentials: either the client_id/client_secret pair or the username/user_password pair (see [SharePoint Initialisation](https://antoinepinto.gitbook.io/easy-environment/sharepoint-environment/sharepoint-initialisation)). Furthermore, the installation of the `Office365-REST-Python-Client` library is required.
+* For using **Google Cloud**, it is necessary to specify the project ID, the path to a credential .json file, and, in case of interaction with Google Cloud Storage, the path to the GCS folder (see [Google Cloud Initialisation](https://antoinepinto.gitbook.io/easyenvi/google-cloud-environment/google-cloud-initialisation)). Additionnaly, the installation of the libraries `google-cloud-storage`, `google-cloud-bigquery` and `fsspec` is required. 
+* For using **SharePoint**, it is necessary to specify the SharePoint site to interact with, as well as authentication credentials: either the client_id/client_secret pair or the username/user_password pair (see [SharePoint Initialisation](https://antoinepinto.gitbook.io/easyenvi/sharepoint-environment/sharepoint-initialisation)). Furthermore, the installation of the `Office365-REST-Python-Client` library is required.
 
 ## Examples of use
 
@@ -125,7 +125,7 @@ envi.sharepoint.list_files(folder="local_folder")
 
 ## Documentation
 
-The documentation is available here : [Easy Environment - Documentation](https://antoinepinto.gitbook.io/easy-environment/)
+The documentation is available here : [Easy Environment - Documentation](https://antoinepinto.gitbook.io/easyenvi/)
 
 ## Credits
 
