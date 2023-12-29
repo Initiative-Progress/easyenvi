@@ -1,9 +1,13 @@
 rsc
 example.ipynb
 root_of_the_project
+trash
+tests
+
+# local environment
+.vscode
 __pycache__
 .ipynb_checkpoints
-trash
 
 # package
 dist
