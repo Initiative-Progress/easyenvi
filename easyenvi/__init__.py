@@ -37,19 +37,17 @@ class EasyEnvironment:
         Either the pair client_id - client_secret is required, either the pair username - user_password
     """
 
-    def __init__(self, local_path=None, gcloud_project_id=None, gcloud_credential_path=None,
+    def __init__(self, local_path="", gcloud_project_id=None, gcloud_credential_path=None,
                  GCS_path=None, sharepoint_site_url=None, sharepoint_client_id=None,
                  sharepoint_client_secret=None, sharepoint_username=None, 
                  sharepoint_user_password=None, extra_loader_config=None, extra_saver_config=None):
 
-        if local_path is not None:
-
-            from .disk import Disk
-        
-            self.local = Disk(
-                root_path=local_path, 
-                extra_loader_config=extra_loader_config, 
-                extra_saver_config=extra_saver_config)
+        from .disk import Disk
+    
+        self.local = Disk(
+            root_path=local_path, 
+            extra_loader_config=extra_loader_config, 
+            extra_saver_config=extra_saver_config)
 
         if gcloud_project_id is not None:
 
