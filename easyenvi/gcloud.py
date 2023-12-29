@@ -59,21 +59,6 @@ class GCS:
         if credential_path is not None:
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 
-    def get_blob(self, path):
-        """
-        Retrieves a blob from the specified path in Google Cloud Storage.
-
-        Parameters
-        ----------
-        path : str
-            path to blob
-        """
-
-        full_path = self.GCS_path + path
-        bucket_name, path = full_path[5:].split('/', 1)
-        blob = storage.Client(project=self.project_id).bucket(bucket_name).blob(path)
-        return blob
-
     def load(self, path, **kwargs):
         """
         Load a file from GCS
@@ -164,9 +149,24 @@ class GCS:
             path to store the file
         """
 
-        blob = self.get_blob(path)
-        blob.download_to_filename(output_path)
-    
+        full_path = self.GCS_path + path
+        fs = fsspec.filesystem('gcs', token=self.credential_path)
+        fs.download(full_path, output_path)
+
+    def delete(self, path):
+        """
+        Delete a file from Google Cloud Storage.
+
+        Parameters
+        ----------
+        path : str
+            path to delete from
+        """
+        
+        full_path = self.GCS_path + path
+        fs = fsspec.filesystem('gcs', token=self.credential_path)
+        fs.rm(full_path)
+
 class BQ:
     """
     Allows interaction with Google Cloud Big Query environment.
