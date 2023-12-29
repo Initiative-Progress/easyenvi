@@ -131,6 +131,7 @@ The documentation is available here : [Easy Environment - Documentation](https:/
 
 * Thanks to [Herve Mignot](https://github.com/HerveMignot) for his advice on using `fsspec`.
 * Thanks to [Nizar Fawal](https://www.linkedin.com/in/nizar-fawal/) for encouraging me to deploy this package as a Pypi library.
+* Thanks to [Julien Lambert](https://www.linkedin.com/in/julien--lambert/) for the code snippets and feedback.
 
 ## Future Improvements
 
