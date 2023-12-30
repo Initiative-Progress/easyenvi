@@ -22,19 +22,31 @@
   <img src="https://github.com/AntoinePinto/easyenvi/blob/master/img/table_support.png?raw=true" alt="drawing" width="800"/>
 </p>
 
-## Initialisation
-
-To use Easy Environment, follow these instructions:
-
-1. Install `easyenvi`
+Start by installing `easyenvi` :
 
 ```python
-pip install easyenvi==1.0.5
+pip install easyenvi==1.0.6
 ```
 
-2. Create an instance of the `EasyEnvironment` class
+## Multi-format loading and saving
 
-All the parameters in the `EasyEnvironment` class are optional: it depends on how you use the tool. 
+Load or save a large variety of format : csv, docx, jpg, json, md, parquet, pdf, pickle, png, pptx, sql, toml, txt, xlsx, xml, yaml, yml
+
+```python
+from easyenvi import file
+
+secrets = file.load('my_path/secrets.toml')
+config = file.load('my_path/config.json')
+query = file.load('my_path/titanic.sql')
+
+file.save(df, 'my_path/titanic.csv')
+file.save(df, 'my_path/my_dict.parquet')
+file.save(my_dict, 'my_path/my_dict.pickle')
+```
+
+## Multi-environment management
+
+To use Easy Environment, create an instance of the `EasyEnvironment` class. All the parameters in the `EasyEnvironment` class are optional: it depends on which environment you need to access.
 
 ```python
 from easyenvi import EasyEnvironment
@@ -47,15 +59,15 @@ envi = EasyEnvironment(
   GCS_path="gs://your-bucket-name/", # Optional
 
   sharepoint_site_url="https://{tenant}.sharepoint.com/sites/{site}", # Optional
-  sharepoint_client_id="your-client-id", # Optional
-  sharepoint_client_secret="your-client-secret", # Optional
+  sharepoint_username="your-username", # Optional
+  sharepoint_user_password="your-password" # Optional
                   )
 ```
 
 Specifying certain parameters means certain dependencies: 
-* For using **local operation**, it is necessary to specify `local_path`, the path from which local operations should be executed - specify an empty string if you want to use the current directory. Additionnaly, the installation of the `fsspec` library is required.
-* For using **Google Cloud**, it is necessary to specify the project ID, the path to a credential .json file, and, in case of interaction with Google Cloud Storage, the path to the GCS folder (see [Google Cloud Initialisation](https://antoinepinto.gitbook.io/easyenvi/google-cloud-environment/google-cloud-initialisation)). Additionnaly, the installation of the libraries `google-cloud-storage`, `google-cloud-bigquery` and `fsspec` is required. 
-* For using **SharePoint**, it is necessary to specify the SharePoint site to interact with, as well as authentication credentials: either the client_id/client_secret pair or the username/user_password pair (see [SharePoint Initialisation](https://antoinepinto.gitbook.io/easyenvi/sharepoint-environment/sharepoint-initialisation)). Furthermore, the installation of the `Office365-REST-Python-Client` library is required.
+* For using **local operation**, `local_path` is the path from which local operations should be executed - specify an empty string if you want to use the current directory.
+* For using **Google Cloud**, it is necessary to specify the project ID, the path to a credential .json file, and, in case of interaction with Google Cloud Storage, the path to the GCS folder (see [Google Cloud Initialisation](https://antoinepinto.gitbook.io/easyenvi/google-cloud-environment/google-cloud-initialisation)). 
+* For using **SharePoint**, it is necessary to specify the SharePoint site to interact with, as well as authentication credentials: either the client_id/client_secret pair or the username/user_password pair (see [SharePoint Initialisation](https://antoinepinto.gitbook.io/easyenvi/sharepoint-environment/sharepoint-initialisation)).
 
 ## Examples of use
 

@@ -12,3 +12,4 @@ __pycache__
 # package
 dist
 easyenvi.egg-info
+build
