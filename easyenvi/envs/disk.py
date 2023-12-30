@@ -1,10 +1,8 @@
 import os
 
-import fsspec
+from easyenvi import file
 
-from .file_manager import FileManager
-
-class Disk:
+class disk:
     """
     Allows interaction with local environment.
 
@@ -20,8 +18,7 @@ class Disk:
 
     def __init__(self, root_path, extra_loader_config=None, extra_saver_config=None):
         self.root_path = root_path
-        self.file_manager = FileManager(extra_loader_config, extra_saver_config)
-
+        
     def load(self, path, **kwargs):
         """
         Load a file.
@@ -35,19 +32,7 @@ class Disk:
         """
 
         load_path = os.path.join(self.root_path, path)
-        extension = path.split('.')[-1]
-
-        if extension not in self.file_manager.loader_config:
-            error_message = (
-                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
-            )
-            raise ValueError(error_message)
-
-        loader, mode = self.file_manager.loader_config[extension]
-
-        with fsspec.open(load_path, mode) as f:
-            return loader(f, **kwargs)
+        return file.load(load_path)
 
     def save(self, obj, path, **kwargs):
         """
@@ -64,19 +49,7 @@ class Disk:
         """
 
         save_path = os.path.join(self.root_path, path)
-        extension = path.split('.')[-1]
-
-        if extension not in self.file_manager.saver_config:
-            error_message = (
-                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
-            )
-            raise ValueError(error_message)
-
-        saver, mode = self.file_manager.saver_config[extension]
-
-        with fsspec.open(save_path, mode) as f:
-            saver(obj, f, **kwargs)
+        return file.save(obj, save_path)
 
     def clear_folder(self, path):
         """

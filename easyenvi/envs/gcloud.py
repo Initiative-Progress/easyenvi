@@ -2,9 +2,8 @@ import os
 
 import fsspec
 
+from easyenvi import file
 from google.cloud import storage, bigquery
-
-from .file_manager import FileManager
 
 class gcloud:
     """
@@ -53,7 +52,6 @@ class GCS:
     
         self.project_id = project_id
         self.GCS_path = GCS_path
-        self.file_manager = FileManager(extra_loader_config, extra_saver_config)
         self.credential_path = credential_path
 
         if credential_path is not None:
@@ -71,19 +69,8 @@ class GCS:
             path to load from
         """
 
-        extension = path.split('.')[-1]
-
-        if extension not in self.file_manager.loader_config:
-            error_message = (
-                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
-            )
-            raise ValueError(error_message)
-
         full_path = self.GCS_path + path
-        loader, mode = self.file_manager.loader_config[extension]
-        with fsspec.open(full_path, mode, token=self.credential_path) as f:
-            return loader(f, **kwargs)
+        return file.load(full_path, token=self.credential_path)
 
     def save(self, obj, path, **kwargs):
         """
@@ -100,14 +87,6 @@ class GCS:
         """
 
         extension = path.split('.')[-1]
-
-        if extension not in self.file_manager.saver_config:
-            error_message = (
-                f"Extension '{extension}' is not currently supported through Easy Environment. You can\n"
-                "customise supported extensions (see documentation https://antoinepinto.gitbook.io/easy-environment/extra/customise-supported-formats)"
-            )
-            raise ValueError(error_message)
-
         if extension in ['png', 'jpg']:
             error_message = (
                 f"Extension '{extension}' is not currently supported for saving in Google Cloud Storage\n"
@@ -116,9 +95,7 @@ class GCS:
             raise ValueError(error_message)
 
         full_path = self.GCS_path + path
-        saver, mode = self.file_manager.saver_config[extension]
-        with fsspec.open(full_path, mode, token=self.credential_path) as f:
-            return saver(obj, f, **kwargs)
+        return file.save(obj, full_path, token=self.credential_path)
 
     def list_files(self, path):
         """
