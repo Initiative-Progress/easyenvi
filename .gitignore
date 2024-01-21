@@ -1,10 +1,7 @@
-rsc
-example.ipynb
-root_of_the_project
-trash
-tests
+desc
 
 # local environment
+.pytest_cache
 .vscode
 __pycache__
 .ipynb_checkpoints
