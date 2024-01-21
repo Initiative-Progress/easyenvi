@@ -1,0 +1,14 @@
+- name: John Doe
+  age: 30
+  email: john@example.com
+  address:
+    street: 123 Main St
+    city: Anytown
+    country: USA
+- name: Jane Smith
+  age: 28
+  email: jane@example.com
+  address:
+    street: 456 Elm St
+    city: Another City
+    country: Canada

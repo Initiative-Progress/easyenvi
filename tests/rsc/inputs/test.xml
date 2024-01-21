@@ -1,0 +1,14 @@
+<bookstore>
+  <book>
+    <title>Harry Potter and the Sorcerer's Stone</title>
+    <author>J.K. Rowling</author>
+    <genre>Fantasy</genre>
+    <price>19.99</price>
+  </book>
+  <book>
+    <title>The Great Gatsby</title>
+    <author>F. Scott Fitzgerald</author>
+    <genre>Classic</genre>
+    <price>12.95</price>
+  </book>
+</bookstore>

@@ -1,0 +1,17 @@
+# Example Configuration File
+
+[database]
+host = "localhost"
+port = 5432
+username = "myuser"
+password = "mypassword"
+database_name = "mydb"
+
+[app]
+name = "MyApp"
+version = "1.0"
+debug = false
+
+[logging]
+level = "info"
+file = "app.log"
