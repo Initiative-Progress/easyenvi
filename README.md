@@ -25,7 +25,7 @@
 Start by installing `easyenvi` :
 
 ```python
-pip install easyenvi==1.0.6
+pip install easyenvi==1.0.7
 ```
 
 ## Multi-format loading and saving
