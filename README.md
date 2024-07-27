@@ -25,7 +25,7 @@
 Start by installing `easyenvi` :
 
 ```python
-pip install easyenvi==1.0.7
+pip install easyenvi
 ```
 
 ## Multi-format loading and saving
@@ -124,12 +124,16 @@ new_dataset = envi.gcloud.BQ.query(query).to_dataframe()
 
 ```python
 # Download a file
-envi.sharepoint.download(input_path="/Document partages/sharepoint_folder/my_file.txt",
-                         output_path="local_folder/my_file.txt")
+envi.sharepoint.download(
+  input_path="/Document partages/sharepoint_folder/my_file.txt",
+  output_path="local_folder/my_file.txt"
+  )
                         
 # Upload a file
-envi.sharepoint.upload(input_path="local_folder/my_file.txt",
-                       output_path="Document partages/folder/my_file.txt")
+envi.sharepoint.upload(
+  input_path="local_folder/my_file.txt",
+  output_path="Document partages/folder/my_file.txt"
+  )
                       
 # List files
 envi.sharepoint.list_files(folder="local_folder")
@@ -138,12 +142,6 @@ envi.sharepoint.list_files(folder="local_folder")
 ## Documentation
 
 The documentation is available here : [Easy Environment - Documentation](https://antoinepinto.gitbook.io/easyenvi/)
-
-## Credits
-
-* Thanks to [Herve Mignot](https://github.com/HerveMignot) for his advice on using `fsspec`.
-* Thanks to [Nizar Fawal](https://www.linkedin.com/in/nizar-fawal/) for encouraging me to deploy this package as a Pypi library.
-* Thanks to [Julien Lambert](https://www.linkedin.com/in/julien--lambert/) for the code snippets and feedback.
 
 ## Future Improvements
 

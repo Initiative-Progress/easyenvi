@@ -1,6 +1,5 @@
-from easyenvi.envs.sharepoint import sharepoint
-from easyenvi.envs.gcloud import gcloud
 from easyenvi.envs.disk import disk
+from .error_handler import missing_module_error_handler
 
 class EasyEnvironment:
     """
@@ -41,26 +40,43 @@ class EasyEnvironment:
         Either the pair client_id - client_secret is required, either the pair username - user_password
     """
 
-    def __init__(self, local_path="", gcloud_project_id=None, gcloud_credential_path=None,
-                 GCS_path=None, sharepoint_site_url=None, sharepoint_client_id=None,
-                 sharepoint_client_secret=None, sharepoint_username=None, 
-                 sharepoint_user_password=None, extra_loader_config=None, extra_saver_config=None):
+    @missing_module_error_handler
+    def __init__(
+            self, 
+            local_path="", 
+            gcloud_project_id=None, 
+            gcloud_credential_path=None,
+            GCS_path=None, 
+            sharepoint_site_url=None, 
+            sharepoint_client_id=None,
+            sharepoint_client_secret=None, 
+            sharepoint_username=None, 
+            sharepoint_user_password=None, 
+            extra_loader_config=None, 
+            extra_saver_config=None
+            ):
     
         self.local = disk(
             root_path=local_path, 
             extra_loader_config=extra_loader_config, 
-            extra_saver_config=extra_saver_config)
+            extra_saver_config=extra_saver_config
+            )
 
         if gcloud_project_id is not None:
+
+            from easyenvi.envs.gcloud import gcloud
 
             self.gcloud = gcloud(
                 project_id=gcloud_project_id, 
                 GCS_path=GCS_path, 
                 credential_path=gcloud_credential_path,
                 extra_loader_config=extra_loader_config, 
-                extra_saver_config=extra_saver_config)
+                extra_saver_config=extra_saver_config
+                )
             
         if sharepoint_site_url is not None:
+
+            from easyenvi.envs.sharepoint import sharepoint
 
             self.sharepoint = sharepoint(
                 site_url=sharepoint_site_url,
@@ -68,4 +84,4 @@ class EasyEnvironment:
                 client_secret=sharepoint_client_secret,
                 username=sharepoint_username, 
                 user_password=sharepoint_user_password
-                        )
+                )

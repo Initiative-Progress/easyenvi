@@ -1,4 +1,5 @@
 desc
+.env
 
 # local environment
 .pytest_cache

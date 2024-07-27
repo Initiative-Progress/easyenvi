@@ -1,5 +1,7 @@
 from easyenvi.file import format_converter
 
+from ..error_handler import missing_module_error_handler
+
 loader_config = {
     'csv':      format_converter.csv_loader,
     'docx':     format_converter.docx_loader,
@@ -40,6 +42,7 @@ saver_config = {
     'yml':      format_converter.yaml_saver
 }
 
+@missing_module_error_handler
 def load(path, **kwargs):
 
     extension = path.split('.')[-1]
@@ -51,6 +54,7 @@ def load(path, **kwargs):
 
     return loader(path, **kwargs)
 
+@missing_module_error_handler
 def save(obj, path, **kwargs):
 
     extension = path.split('.')[-1]
