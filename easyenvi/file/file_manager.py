@@ -43,7 +43,10 @@ saver_config = {
 }
 
 @missing_module_error_handler
-def load(path, **kwargs):
+def load(
+        path: str, 
+        **kwargs
+        ):
 
     extension = path.split('.')[-1]
 
@@ -55,7 +58,11 @@ def load(path, **kwargs):
     return loader(path, **kwargs)
 
 @missing_module_error_handler
-def save(obj, path, **kwargs):
+def save(
+        obj, 
+        path: str, 
+        **kwargs
+        ):
 
     extension = path.split('.')[-1]
 

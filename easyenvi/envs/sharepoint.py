@@ -24,7 +24,14 @@ class sharepoint:
         User password of a SharePoint user account.
     """
 
-    def __init__(self, site_url, client_id=None, client_secret=None, username=None, user_password=None):
+    def __init__(
+            self, 
+            site_url: str, 
+            client_id: str | None = None, 
+            client_secret: str | None = None, 
+            username: str | None = None, 
+            user_password: str | None = None
+            ):
 
         if client_id is not None:
             credentials = ClientCredential(client_id, client_secret)
@@ -33,7 +40,11 @@ class sharepoint:
 
         self.env = ClientContext(site_url).with_credentials(credentials)
 
-    def download(self, input_path, output_path):
+    def download(
+            self, 
+            input_path: str, 
+            output_path: str
+            ):
         """
         Download a file from SharePoint.
         
@@ -53,7 +64,11 @@ class sharepoint:
             .execute_query()
                      )
            
-    def upload(self, input_path, output_path):
+    def upload(
+            self, 
+            input_path: str, 
+            output_path: str
+            ):
         """
         Upload a file into SharePoint.
         
@@ -71,7 +86,10 @@ class sharepoint:
         dir, name = os.path.split(output_path)
         self.env.web.get_folder_by_server_relative_url(dir).upload_file(name, file_content).execute_query()
            
-    def list_files(self, folder):
+    def list_files(
+            self, 
+            folder: str
+            ):
         """
         List the files in a SharePoint folder
         
@@ -87,7 +105,10 @@ class sharepoint:
 
         return files
     
-    def delete_file(self, file_path):
+    def delete_file(
+            self, 
+            file_path: str
+            ):
         """
         Delete a file
         

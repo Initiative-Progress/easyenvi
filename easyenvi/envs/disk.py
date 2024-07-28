@@ -16,10 +16,20 @@ class disk:
         Extra configuration for file savers. Default is None.
     """
 
-    def __init__(self, root_path, extra_loader_config=None, extra_saver_config=None):
+    def __init__(
+            self, 
+            root_path: str, 
+            extra_loader_config: dict | None = None, 
+            extra_saver_config: dict | None = None
+            ):
+        
         self.root_path = root_path
         
-    def load(self, path, **kwargs):
+    def load(
+            self, 
+            path: str, 
+            **kwargs
+            ):
         """
         Load a file.
         To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
@@ -32,9 +42,14 @@ class disk:
         """
 
         load_path = os.path.join(self.root_path, path)
-        return file.load(load_path)
+        return file.load(load_path, **kwargs)
 
-    def save(self, obj, path, **kwargs):
+    def save(
+            self, 
+            obj, 
+            path: str, 
+            **kwargs
+            ):
         """
         Save a file
         To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
@@ -49,9 +64,12 @@ class disk:
         """
 
         save_path = os.path.join(self.root_path, path)
-        return file.save(obj, save_path)
+        return file.save(obj, save_path, **kwargs)
 
-    def clear_folder(self, path):
+    def clear_folder(
+            self, 
+            path: str
+            ):
         """
         Clear a folder
         

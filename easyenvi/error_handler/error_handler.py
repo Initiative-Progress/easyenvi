@@ -16,7 +16,7 @@ requirements = {
     "toml": "toml>=0.9.0"
 }
 
-def get_missing_module(error_message):
+def get_missing_module(error_message: str):
     pattern = r"No module named '(.*?)'"
     match = re.search(pattern, str(error_message))
     missing_module = match.group(1)

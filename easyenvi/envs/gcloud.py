@@ -23,12 +23,26 @@ class gcloud:
         Extra configuration for file savers.
     """
 
-    def __init__(self, project_id, credential_path=None, GCS_path=None,
-                 extra_loader_config=None, extra_saver_config=None):
+    def __init__(self, 
+                 project_id: str, 
+                 credential_path: str | None = None, 
+                 GCS_path: str | None = None,
+                 extra_loader_config: dict | None = None, 
+                 extra_saver_config: dict | None = None
+                 ):
 
-        self.GCS = GCS(project_id=project_id, GCS_path=GCS_path, credential_path=credential_path,
-                       extra_loader_config=extra_loader_config, extra_saver_config=extra_saver_config)
-        self.BQ = BQ(project_id=project_id, credential_path=credential_path)
+        self.GCS = GCS(
+            project_id=project_id, 
+            GCS_path=GCS_path, 
+            credential_path=credential_path,
+            extra_loader_config=extra_loader_config, 
+            extra_saver_config=extra_saver_config
+            )
+        
+        self.BQ = BQ(
+            project_id=project_id, 
+            credential_path=credential_path
+            )
 
 class GCS:
     """
@@ -48,7 +62,14 @@ class GCS:
         Extra configuration for file savers.
     """
 
-    def __init__(self, project_id, credential_path=None, GCS_path=None, extra_loader_config=None, extra_saver_config=None):
+    def __init__(
+            self, 
+            project_id: str, 
+            credential_path: str | None = None, 
+            GCS_path: str | None = None, 
+            extra_loader_config: dict | None = None, 
+            extra_saver_config: dict | None = None
+            ):
     
         self.project_id = project_id
         self.GCS_path = GCS_path
@@ -57,7 +78,11 @@ class GCS:
         if credential_path is not None:
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 
-    def load(self, path, **kwargs):
+    def load(
+            self, 
+            path: str, 
+            **kwargs
+            ):
         """
         Load a file from GCS
         To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
@@ -70,9 +95,14 @@ class GCS:
         """
 
         full_path = self.GCS_path + path
-        return file.load(full_path, token=self.credential_path)
+        return file.load(full_path, token=self.credential_path, **kwargs)
 
-    def save(self, obj, path, **kwargs):
+    def save(
+            self, 
+            obj, 
+            path: str, 
+            **kwargs
+            ):
         """
         Save a file to GCS
         To learn more about the extensions supported by default, refer to the documentation : https://antoinepinto.gitbook.io/easy-environment/
@@ -95,9 +125,12 @@ class GCS:
             raise ValueError(error_message)
 
         full_path = self.GCS_path + path
-        return file.save(obj, full_path, token=self.credential_path)
+        return file.save(obj, full_path, token=self.credential_path, **kwargs)
 
-    def list_files(self, path):
+    def list_files(
+            self, 
+            path: str
+            ):
         """
         List files into a specific folder.
         
@@ -114,7 +147,11 @@ class GCS:
 
         return files
     
-    def download(self, path, output_path):
+    def download(
+            self, 
+            path: str, 
+            output_path: str
+            ):
         """
         Download a file from the specified path on Google Cloud Storage.
         
@@ -130,7 +167,10 @@ class GCS:
         fs = fsspec.filesystem('gcs', token=self.credential_path)
         fs.download(full_path, output_path)
 
-    def delete(self, path):
+    def delete(
+            self, 
+            path: str
+            ):
         """
         Delete a file from Google Cloud Storage.
 
@@ -156,14 +196,21 @@ class BQ:
         The path to the Google Cloud credentials file. Default is None.
     """
 
-    def __init__(self, project_id, credential_path=None):
+    def __init__(
+            self, 
+            project_id: str, 
+            credential_path: str | None = None
+            ):
 
         self.project_id = project_id
 
         if credential_path is not None:
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
 
-    def load(self, path):
+    def load(
+            self, 
+            path: str
+            ):
         """
         Load an entire Big Query table into Python.
         
@@ -177,7 +224,12 @@ class BQ:
         client = bigquery.Client(project=self.project_id)
         return client.query(query).result().to_dataframe()
 
-    def write(self, obj, path, schema=None):
+    def write(
+            self, 
+            obj, 
+            path: str, 
+            schema: list | None = None
+            ):
         """
         Write an entire Python dataframe into Big Query.
         
@@ -205,7 +257,11 @@ class BQ:
 
         client.load_table_from_dataframe(obj, path, job_config=job_config)
 
-    def append(self, obj, path):
+    def append(
+            self,
+            obj, 
+            path: str
+            ):
         """
         Append an existing Big Query table.
         
@@ -226,7 +282,10 @@ class BQ:
         client = bigquery.Client(project=self.project_id)
         client.load_table_from_dataframe(obj, path, job_config=job_config)
  
-    def query(self, query):
+    def query(
+            self, 
+            query: str
+            ):
         """
         Execute Big Query query.
         

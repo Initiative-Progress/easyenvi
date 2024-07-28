@@ -43,17 +43,17 @@ class EasyEnvironment:
     @missing_module_error_handler
     def __init__(
             self, 
-            local_path="", 
-            gcloud_project_id=None, 
-            gcloud_credential_path=None,
-            GCS_path=None, 
-            sharepoint_site_url=None, 
-            sharepoint_client_id=None,
-            sharepoint_client_secret=None, 
-            sharepoint_username=None, 
-            sharepoint_user_password=None, 
-            extra_loader_config=None, 
-            extra_saver_config=None
+            local_path: str = "", 
+            gcloud_project_id: str | None = None, 
+            gcloud_credential_path: str | None = None,
+            GCS_path: str | None = None, 
+            sharepoint_site_url: str | None = None, 
+            sharepoint_client_id: str | None = None,
+            sharepoint_client_secret: str | None = None, 
+            sharepoint_username: str | None = None, 
+            sharepoint_user_password: str | None = None, 
+            extra_loader_config: dict | None = None, 
+            extra_saver_config: dict | None = None
             ):
     
         self.local = disk(
