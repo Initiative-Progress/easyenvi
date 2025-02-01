@@ -1,9 +1,16 @@
 <div align="center">
-  <img src="https://github.com/AntoinePinto/easyenvi/blob/master/img/logo.png?raw=true"
-  raw=true" alt="drawing" width="400"/>><br>
-</div>
+<h1 align="center">
+  <a><img src="https://github.com/AntoinePinto/easyenvi/blob/master/img/logo.png?raw=true" width="200"></a>
+  <br>
+  <b>Easy environment</b>
+  <br>
+</h1>
 
-# Easy environment : easy-to-use Python environment management toolkit
+![Static Badge](https://img.shields.io/badge/python->=3.7-blue)
+![GitHub License](https://img.shields.io/github/license/AntoinePinto/easyenvi)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/easyenvi)
+
+</div>
 
 **Easy Environment** is a Python tool that provides **easy-to-use functionality for managing files and data in different environments.** It offers a class that simplifies file operations on the local disk and cloud services such as Google Cloud (Google Cloud Storage and Big Query) or SharePoint.
 
@@ -142,7 +149,3 @@ envi.sharepoint.list_files(folder="local_folder")
 ## Documentation
 
 The documentation is available here : [Easy Environment - Documentation](https://antoinepinto.gitbook.io/easyenvi/)
-
-## Future Improvements
-
-Future releases of Easy Environment will include support for additional cloud storage providers, including Amazon Web Services (AWS) and Microsoft Azure.
